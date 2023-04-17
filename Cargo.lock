@@ -418,19 +418,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "5b40af805b3121feab8a3c29f04d8ad262fa8e0561883e7653e024ae4479e6de"
 
 [[package]]
-name = "pre_reactive_poc"
-version = "0.1.0"
-dependencies = [
- "home",
- "once_cell",
- "rand",
- "self-meter",
- "serde_json",
- "structopt",
- "xlsxwriter",
-]
-
-[[package]]
 name = "prettyplease"
 version = "0.2.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -532,6 +519,19 @@ name = "regex-syntax"
 version = "0.6.29"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f162c6dd7b008981e4d40210aca20b4bd0f9b60ca9271061b07f78537722f2e1"
+
+[[package]]
+name = "rust_json_benchmark"
+version = "0.1.0"
+dependencies = [
+ "home",
+ "once_cell",
+ "rand",
+ "self-meter",
+ "serde_json",
+ "structopt",
+ "xlsxwriter",
+]
 
 [[package]]
 name = "rustc-hash"

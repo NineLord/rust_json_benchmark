@@ -13,7 +13,7 @@ use once_cell::sync::Lazy;
 use structopt::StructOpt;
 
 // Project
-use pre_reactive_poc::json_generator::Generator;
+use rust_json_benchmark::json_generator::Generator;
 /* #endregion */
 
 /* #region Default Values */

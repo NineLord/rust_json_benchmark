@@ -11,13 +11,13 @@ use std::{
 use xlsxwriter::{Workbook, XlsxError};
 
 // Project
-use pre_reactive_poc::test_json::{excel_generator, pc_usage_exporter::PcUsage};
+use rust_json_benchmark::test_json::{excel_generator, pc_usage_exporter::PcUsage};
 /* #endregion */
 
 fn create_example_excel() -> Result<(), Box<dyn Error>> {
     let sample_interval = Duration::from_millis(50);
     let mut generator = excel_generator::ExcelGenerator::new(
-        "/mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/PreReactivePoc/junk/trying.xlsx",
+        "/mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/rust_json_benchmark/junk/trying.xlsx",
         "json_path",
         &sample_interval,
         8, 10, 6)?;

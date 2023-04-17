@@ -1,5 +1,5 @@
 [package]
-name = "pre_reactive_poc"
+name = "rust_json_benchmark"
 version = "0.1.0"
 edition = "2021"
 default-run = "json_tester"

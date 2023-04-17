@@ -20,9 +20,9 @@ use serde_json::{ Value, json, value };
 use self_meter::Meter;
 
 // Project
-use pre_reactive_poc::json_generator;
-use pre_reactive_poc::search_tree::{ breadth_first_search, depth_first_search };
-use pre_reactive_poc::test_json::{reporter::Report, pc_usage_exporter, excel_generator::ExcelGenerator};
+use rust_json_benchmark::json_generator;
+use rust_json_benchmark::search_tree::{ breadth_first_search, depth_first_search };
+use rust_json_benchmark::test_json::{reporter::Report, pc_usage_exporter, excel_generator::ExcelGenerator};
 /* #endregion */
 
 /* #region Default values */

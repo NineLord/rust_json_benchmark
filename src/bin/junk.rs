@@ -8,7 +8,7 @@ use std::{
     error::Error,
 };
 use serde_json::{ Result as Serde_Result, Value, json, Map };
-use pre_reactive_poc::{search_tree::depth_first_search, test_json::pc_usage_exporter::{self, PcUsage}};
+use rust_json_benchmark::{search_tree::depth_first_search, test_json::pc_usage_exporter::{self, PcUsage}};
 
 fn _how_to_insert_to_json_array() {
     let index = 5;
@@ -106,7 +106,7 @@ fn foo() -> i32 {
 }
 
 fn test_reporter() {
-    use pre_reactive_poc::test_json::reporter::Report;
+    use rust_json_benchmark::test_json::reporter::Report;
 
     let mut reporter = Report::new();
 
@@ -179,7 +179,7 @@ fn test_pc_usage_scan() -> Result<(), Box<dyn Error>> {
 }
 
 fn test_pc_usage_with_thread() -> Result<(), Box<dyn Error>> {
-    use pre_reactive_poc::test_json::{self, pc_usage_exporter::PcUsage};
+    use rust_json_benchmark::test_json::{self, pc_usage_exporter::PcUsage};
     use self_meter::Meter;
 
     let (main_sender, thread_receiver) = mpsc::channel();
@@ -252,7 +252,7 @@ fn other_thread(thread_sender: Sender<PcUsage>, thread_recevier: Receiver<()>, s
 }
 
 fn test_pc_usage_with_thread_2() -> Result<(), Box<dyn Error>> {
-    use pre_reactive_poc::test_json::{self, pc_usage_exporter::PcUsage};
+    use rust_json_benchmark::test_json::{self, pc_usage_exporter::PcUsage};
     use self_meter::Meter;
 
     let sample_interval = 1000_u64;
