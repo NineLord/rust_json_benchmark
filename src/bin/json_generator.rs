@@ -1,4 +1,4 @@
-#![allow(unused, dead_code)] // Shaked-TODO: remove this
+// #![allow(unused, dead_code)]
 
 /* #region Imports */
 // Standard
@@ -68,7 +68,7 @@ fn main() -> Result<(), Box<dyn Error>> {
     if options.print {
         println!("{}", serde_json::to_string_pretty(&json)?);
     } else {
-        fs::write(options.path_to_save_file.as_path(), serde_json::to_string(&json)?);
+        fs::write(options.path_to_save_file.as_path(), serde_json::to_string(&json)?)?;
     }
 
     Ok(())

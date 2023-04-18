@@ -11,7 +11,7 @@ use xlsxwriter::{Workbook, XlsxError, Worksheet, Format, format::{FormatBorder, 
 
 // Project
 use crate::{
-    utils::math_data_collector::{MathDataCollector, self},
+    utils::math_data_collector::{MathDataCollector},
     test_json::pc_usage_exporter::PcUsage,
 };
 /* #endregion */
@@ -86,8 +86,9 @@ impl<'a> ExcelGenerator<'a> {
         worksheet.freeze_panes(0, 1);
 
         ExcelGenerator::generate_titles(&mut worksheet, &self.format_border, &self.format_border_center)?;
+        #[allow(unused)]
         let (column_cpu_usage, column_ram_usage) =
-            ExcelGenerator::add_data(&mut self.math_data_collectors, &mut worksheet, measures, pc_usage, &self.format_border, &self.format_border_center)?;
+            ExcelGenerator::add_data(&mut self.math_data_collectors, &mut worksheet, measures, pc_usage, &self.format_border_center)?;
 
         Ok(())
     }
@@ -133,10 +134,8 @@ impl<'a> ExcelGenerator<'a> {
         worksheet: &mut Worksheet,
         measures: &HashMap<&str, Duration>,
         pc_usage: &[PcUsage],
-        format_borader: &Format,
         format_borader_center: &Format) ->
     Result<(MathDataCollector, MathDataCollector), Box<dyn Error>> {
-        let format_borader = Some(format_borader);
         let format_borader_center = Some(format_borader_center);
 
         let mut row_total = MathDataCollector::new();
@@ -172,7 +171,7 @@ impl<'a> ExcelGenerator<'a> {
             row_total.add(milliseconds);
         }
 
-        worksheet.write_number(6, 1, row_total.get_sum(), format_borader_center);
+        worksheet.write_number(6, 1, row_total.get_sum(), format_borader_center)?;
         /* #endregion */
 
         /* #region PC Usage */
@@ -211,7 +210,7 @@ impl<'a> ExcelGenerator<'a> {
     fn add_average_worksheet(&mut self) -> Result<(), XlsxError> {
         let mut worksheet = self.workbook.add_worksheet(Some("Average"))?;
         ExcelGenerator::generate_average_titles(&mut worksheet, &self.format_border, &self.format_border_center)?;
-        ExcelGenerator::add_average_data(&mut worksheet, &self.format_border_center, &self.math_data_collectors);
+        ExcelGenerator::add_average_data(&mut worksheet, &self.format_border_center, &self.math_data_collectors)?;
 
         Ok(())
     }

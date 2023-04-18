@@ -4,7 +4,7 @@ use serde_json::Value;
 /* #endregion */
 
 pub fn run(root: &Value, value_to_find: &Value) -> bool {
-    let mut current_nodes: Vec<&Value> = vec![];
+    let mut current_nodes: Vec<&Value>;
     let mut next_level_nodes: Vec<&Value> = vec![root];
 
     while !next_level_nodes.is_empty() {
@@ -41,8 +41,6 @@ pub fn run(root: &Value, value_to_find: &Value) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use core::num;
-
     /* #region Imports */
     // 3rd Party
     use once_cell::sync::Lazy;

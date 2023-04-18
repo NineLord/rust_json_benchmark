@@ -1,4 +1,4 @@
-#![allow(unused, dead_code)] // Shaked-TODO: remove this
+// #![allow(unused, dead_code)]
 /* #region Imports */
 // Standard
 use std::{
@@ -16,8 +16,7 @@ use std::{
 use home::home_dir;
 use once_cell::sync::Lazy;
 use structopt::StructOpt;
-use serde_json::{ Value, json, value };
-use self_meter::Meter;
+use serde_json::{ Value, json };
 
 // Project
 use rust_json_benchmark::json_generator;
@@ -40,6 +39,7 @@ static DEFAULT_PATH_TO_SAVE_FILE: Lazy<String> = Lazy::new(|| {
         .expect("Failed to convert the PathBuf of DEFAULT_PATH_TO_SAVE_FILE to String")
 });
 
+#[allow(unused)]
 static DEFAULT_PATH_TO_DEBUG_DIRECTORY: Lazy<String> = Lazy::new(|| {
     let mut path = PathBuf::from(env!("CARGO_MANIFEST_DIR"));
     path.push("junk");
@@ -72,7 +72,7 @@ struct OptionalArguments {
 
     /// Absolute path to save the excel report file to
     #[structopt(short = "s", long = "save-file", parse(from_os_str), default_value = &DEFAULT_PATH_TO_SAVE_FILE)]
-    path_to_save_file: PathBuf, // Shaked-TODO
+    path_to_save_file: PathBuf,
 
     /// The interval in which it will sample the CPU/RAM usage of the system while running the tests, units are in milliseconds
     #[structopt(short = "i", long, parse(try_from_str = parse_duration_from_millis), default_value = "50")]
@@ -97,10 +97,11 @@ struct OptionalArguments {
 /* #endregion */
 
 // Example: clear ; cargo run -- /mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/PreReactivePoc/junk/hugeJson_numberOfLetters8_depth10_children5.json 5 -d2 -m2 -n3 -i10
+// Example: clear ; cargo run -- -d3 -m2 -n8 -i50 -s /mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/rust_json_benchmark/junk/result.xlsx /mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/rust_json_benchmark/junk/hugeJson_numberOfLetters8_depth10_children5.json 2
 
 fn main() -> Result<(), Box<dyn Error>> {
     let options = OptionalArguments::from_args();
-    if (options.debug) {
+    if options.debug {
         println!("{:#?}", options);
     }
 
@@ -138,7 +139,7 @@ fn main() -> Result<(), Box<dyn Error>> {
                 options.depth,
                 options.number_of_children
             )
-        );
+        )?;
 
         let title = String::from("Test Deserialize JSON");
         let json: Value = reporter.measure(&title, ||
@@ -159,12 +160,12 @@ fn main() -> Result<(), Box<dyn Error>> {
         let title = String::from("Test Serialize JSON");
         reporter.measure(&title, ||
             serde_json::to_string(&json)
-        );
+        )?;
         /* #endregion */
         
         /* #region Getting PC Usage from other thread */
         main_sender.send(()).expect("Couldn't terminate PC usage thread");
-        pc_usage_exporter_thread.join();
+        pc_usage_exporter_thread.join().expect("Couldn't join pc_usage_exporter_thread");
         let mut pc_usage = vec![];
         for received in main_reciver {
             pc_usage.push(received);

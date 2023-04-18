@@ -23,6 +23,7 @@ enum ValueLeafType {
 
 const VARIANTS_VALUE_LEAF_TYPES: [ValueLeafType; 4] = [ValueLeafType::Null, ValueLeafType::Bool, ValueLeafType::Number, ValueLeafType::String];
 
+#[allow(unused)]
 enum ValueTypes {
     Leaf(ValueLeafType),
     NoneLeaf(ValueNonLeafType)

@@ -199,7 +199,6 @@ fn test_pc_usage_with_thread() -> Result<(), Box<dyn Error>> {
                 Ok(_) => {
                     match scanner.report() {
                         Some(report) => {
-                            // println!("CPU_GROSS: {} ; CPU_Global: {} ; CPU_Process: {}", &report.gross_cpu_usage, &report.global_cpu_usage, &report.process_cpu_usage); // TODO
                             thread_sender.send(PcUsage {
                                 cpu: report.process_cpu_usage,
                                 ram: (report.memory_rss / 1024) / 1024
