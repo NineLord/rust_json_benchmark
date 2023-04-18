@@ -72,6 +72,7 @@ impl<'a> ExcelGenerator<'a> {
         })
     }
 
+    /* #region Adding Data */
     pub fn append_worksheet(&mut self, worksheet_name: String, measures: &HashMap<&str, Duration>, pc_usage: &[PcUsage]) -> Result<(), Box<dyn Error>> {
         self.worksheet_names.push(worksheet_name);
         let worksheet_name = self.worksheet_names.last().ok_or("Couldn't get the worksheet_name")?;
@@ -81,7 +82,6 @@ impl<'a> ExcelGenerator<'a> {
         ExcelGenerator::generate_titles(&mut worksheet, &self.format_border, &self.format_border_center)?;
         let (column_cpu_usage, column_ram_usage) =
             ExcelGenerator::add_data(&mut self.math_data_collectors, &mut worksheet, measures, pc_usage, &self.format_border, &self.format_border_center)?;
-        
 
         Ok(())
     }
@@ -198,5 +198,85 @@ impl<'a> ExcelGenerator<'a> {
         /* #endregion */
 
         Ok((column_cpu_usage, column_ram_usage))
+    }
+    /* #endregion */
+
+    /* #region Add Synnary Worksheet */
+    fn add_average_worksheet(&mut self) -> Result<(), XlsxError> {
+        let mut worksheet = self.workbook.add_worksheet(Some("Average"))?;
+        ExcelGenerator::generate_average_titles(&mut worksheet, &self.format_border, &self.format_border_center)?;
+        ExcelGenerator::add_average_data(&mut worksheet, &self.format_border_center, &self.math_data_collectors);
+
+        Ok(())
+    }
+
+    fn generate_average_titles(worksheet: &mut Worksheet, format_border: &Format, format_border_center: &Format) -> Result<(), XlsxError> {
+        let format_border = Some(format_border);
+        let format_border_center = Some(format_border_center);
+
+        /* #region Column 1 */
+        /* #region Table 1 */
+        worksheet.write_string(0, 0, "Title", format_border_center)?;
+        worksheet.write_string(1, 0, "Average Generating JSONs", format_border)?;
+        worksheet.write_string(2, 0, "Average Iterating JSONs Iteratively - BFS", format_border)?;
+        worksheet.write_string(3, 0, "Average Iterating JSONs Recursively - DFS", format_border)?;
+        worksheet.write_string(4, 0, "Average Deserializing JSONs", format_border)?;
+        worksheet.write_string(5, 0, "Average Srializing JSONs", format_border)?;
+        worksheet.write_string(6, 0, "Average Totals", format_border)?;
+        /* #endregion */
+
+        /* #region Table 2 */
+        worksheet.write_string(8, 0, "Average Total CPU (%)", format_border)?;
+        worksheet.write_string(9, 0, "Average Total RAN (MB)", format_border)?;
+        /* #endregion */
+        /* #endregion */
+
+        /* #region Column 2 */
+        worksheet.write_string(0, 1, "Time (ms)", format_border_center)?;
+        /* #endregion */
+
+        Ok(())
+    }
+    
+    fn add_average_data(worksheet: &mut Worksheet, format_border_center: &Format, math_data_collectors: &MathDataCollectors) -> Result<(), XlsxError> {
+        let format_border_center = Some(format_border_center);
+
+        let mut total_averages = MathDataCollector::new();
+        let mut cells = HashMap::new();
+        cells.insert(1, &math_data_collectors.average_generating_jsons);
+        cells.insert(2, &math_data_collectors.average_iterating_jsons_iteratively);
+        cells.insert(3, &math_data_collectors.average_iterating_jsons_recursively);
+        cells.insert(4, &math_data_collectors.average_deserializing_jsons);
+        cells.insert(5, &math_data_collectors.average_serializing_jsons);
+        for (cell_row, math_data_collector) in cells {
+            if let Some(average) = math_data_collector.get_average() {
+                worksheet.write_number(cell_row, 1, average, format_border_center)?;
+                total_averages.add(average);
+            }
+        }
+        worksheet.write_number(6, 1, total_averages.get_sum(), format_border_center)?;
+
+        if let Some(total_average_cpu) = math_data_collectors.total_average_cpu.get_average() {
+            worksheet.write_number(8, 1, total_average_cpu, format_border_center)?;
+        }
+
+        if let Some(total_average_ram) = math_data_collectors.total_average_ram.get_average() {
+            worksheet.write_number(9, 1, total_average_ram, format_border_center)?;
+        }
+
+        Ok(())
+    }
+    /* #endregion */
+
+    fn close(&mut self) -> Result<(), XlsxError> {
+        self.add_average_worksheet()?;
+
+        Ok(())
+    }
+}
+
+impl <'a> Drop for ExcelGenerator<'a> {
+    fn drop(&mut self) {
+        self.close().unwrap();
     }
 }

@@ -35,6 +35,19 @@ fn create_example_excel() -> Result<(), Box<dyn Error>> {
     ];
     generator.append_worksheet(String::from("Test 1"), &measures, &pc_usage)?;
 
+    let mut measures = HashMap::new();
+    measures.insert("Test Generating JSON", Duration::from_millis(2));
+    measures.insert("Test Iterate Iteratively", Duration::from_millis(3));
+    measures.insert("Test Iterate Recursively", Duration::from_millis(5));
+    measures.insert("Test Deserialize JSON", Duration::from_millis(6));
+    measures.insert("Test Serialize JSON", Duration::from_millis(8));
+    let pc_usage = vec![
+        PcUsage {cpu: 75.0, ram: 600},
+        PcUsage {cpu: 50.0, ram: 200},
+        PcUsage {cpu: 50.0, ram: 800},
+    ];
+    generator.append_worksheet(String::from("Test 2"), &measures, &pc_usage)?;
+
     Ok(())
 }
 
