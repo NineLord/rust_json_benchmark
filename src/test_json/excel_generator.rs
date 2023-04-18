@@ -26,12 +26,16 @@ struct MathDataCollectors {
     total_average_ram: MathDataCollector,
 }
 
-pub struct ExcelGenerator<'a> {
-    json_path: &'a str,
-    sample_interval: &'a Duration,
+struct AboutInformation<'b> {
+    json_path: &'b str,
+    sample_interval: &'b Duration,
     number_of_letters: u8,
     depth: u8,
     number_of_children: u8,
+}
+
+pub struct ExcelGenerator<'a> {
+    about_information: AboutInformation<'a>,
     workbook: Workbook,
     format_border: Format,
     format_border_center: Format,
@@ -51,11 +55,13 @@ impl<'a> ExcelGenerator<'a> {
         format_border_center.set_vertical_align(FormatVerticalAlignment::VerticalTop);
 
         Ok(ExcelGenerator {
-            json_path,
-            sample_interval,
-            number_of_letters,
-            depth,
-            number_of_children,
+            about_information: AboutInformation {
+                json_path,
+                sample_interval,
+                number_of_letters,
+                depth,
+                number_of_children,
+            },
             workbook: Workbook::new(path_to_save_file)?,
             format_border,
             format_border_center,
@@ -268,8 +274,34 @@ impl<'a> ExcelGenerator<'a> {
     }
     /* #endregion */
 
+    /* #region Add About Worksheet */
+    fn add_about_worksheet(&mut self) -> Result<(), XlsxError> {
+        let mut worksheet = self.workbook.add_worksheet(Some("About"))?;
+        let format_border = Some(&self.format_border);
+        let format_border_center = Some(&self.format_border_center);
+
+        worksheet.write_string(0, 0, "Path to JSON to be tested on (Iterating/Deserializing/Serializing)", format_border)?;
+        worksheet.write_string(0, 1, self.about_information.json_path, format_border_center)?;
+
+        worksheet.write_string(1, 0, "CPU/RAM Sampling Interval (milliseconds)", format_border)?;
+        worksheet.write_number(1, 1, self.about_information.sample_interval.as_millis() as f64, format_border_center)?;
+
+        worksheet.write_string(2, 0, "Number of letters to generate for each node in the generated JSON tree", format_border)?;
+        worksheet.write_number(2, 1, self.about_information.number_of_letters as f64, format_border_center)?;
+
+        worksheet.write_string(3, 0, "Depth of the generated JSON tree", format_border)?;
+        worksheet.write_number(3, 1, self.about_information.depth as f64, format_border_center)?;
+
+        worksheet.write_string(4, 0, "Number of children each node in the generated JSON tree going to have", format_border)?;
+        worksheet.write_number(4, 1, self.about_information.number_of_children as f64, format_border_center)?;
+
+        Ok(())
+    }
+    /* #endregion */
+
     fn close(&mut self) -> Result<(), XlsxError> {
         self.add_average_worksheet()?;
+        self.add_about_worksheet()?;
 
         Ok(())
     }
