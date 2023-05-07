@@ -96,7 +96,7 @@ struct OptionalArguments {
 }
 /* #endregion */
 
-// Example: clear ; cargo run -- /mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/PreReactivePoc/junk/hugeJson_numberOfLetters8_depth10_children5.json 5 -d2 -m2 -n3 -i10
+// Example: clear ; cargo run -- "/mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/rust_json_benchmark/junk/some.json" 5 -d2 -m2 -n3 -i10 -s "/mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/rust_json_benchmark/junk/trying.xlsx"
 // Example: clear ; cargo run -- -d3 -m2 -n8 -i50 -s /mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/rust_json_benchmark/junk/result.xlsx /mnt/c/Users/Shaked/Documents/Mine/IdeaProjects/rust_json_benchmark/junk/hugeJson_numberOfLetters8_depth10_children5.json 2
 
 fn main() -> Result<(), Box<dyn Error>> {

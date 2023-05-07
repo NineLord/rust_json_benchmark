@@ -83,7 +83,7 @@ impl<'a> ExcelGenerator<'a> {
         self.worksheet_names.push(worksheet_name);
         let worksheet_name = self.worksheet_names.last().ok_or("Couldn't get the worksheet_name")?;
         let mut worksheet = self.workbook.add_worksheet(Some(worksheet_name))?;
-        worksheet.freeze_panes(0, 1);
+        worksheet.freeze_panes(1, 0);
 
         ExcelGenerator::generate_titles(&mut worksheet, &self.format_border, &self.format_border_center)?;
         #[allow(unused)]
@@ -206,7 +206,7 @@ impl<'a> ExcelGenerator<'a> {
     }
     /* #endregion */
 
-    /* #region Add Synnary Worksheet */
+    /* #region Add Summary Worksheet */
     fn add_average_worksheet(&mut self) -> Result<(), XlsxError> {
         let mut worksheet = self.workbook.add_worksheet(Some("Average"))?;
         ExcelGenerator::generate_average_titles(&mut worksheet, &self.format_border, &self.format_border_center)?;
@@ -226,7 +226,7 @@ impl<'a> ExcelGenerator<'a> {
         worksheet.write_string(2, 0, "Average Iterating JSONs Iteratively - BFS", format_border)?;
         worksheet.write_string(3, 0, "Average Iterating JSONs Recursively - DFS", format_border)?;
         worksheet.write_string(4, 0, "Average Deserializing JSONs", format_border)?;
-        worksheet.write_string(5, 0, "Average Srializing JSONs", format_border)?;
+        worksheet.write_string(5, 0, "Average Serializing JSONs", format_border)?;
         worksheet.write_string(6, 0, "Average Totals", format_border)?;
         /* #endregion */
 

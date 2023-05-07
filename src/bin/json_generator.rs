@@ -17,7 +17,7 @@ use rust_json_benchmark::json_generator::Generator;
 /* #endregion */
 
 /* #region Default Values */
-const ALPHABETA: &str = "abcdefghijklmnopqrstuvwxyz";
+const ALPHABET: &str = "abcdefghijklmnopqrstuvwxyz";
 
 static DEFAULT_PATH_TO_SAVE_FILE: Lazy<String> = Lazy::new(|| {
     let mut path = match home_dir() {
@@ -54,7 +54,7 @@ struct OptionalArguments {
     #[structopt(short = "m", long, default_value = "6")]
     number_of_children: u8,
 
-    /// Print the resulting JSON istead of saving it to a file
+    /// Print the resulting JSON instead of saving it to a file
     #[structopt(short = "P", long)]
     print: bool,
 }
@@ -63,7 +63,7 @@ struct OptionalArguments {
 
 fn main() -> Result<(), Box<dyn Error>> {
     let options = OptionalArguments::from_args();
-    let json = Generator::generate_json(&ALPHABETA, options.number_of_letters, options.depth, options.number_of_children)?;
+    let json = Generator::generate_json(&ALPHABET, options.number_of_letters, options.depth, options.number_of_children)?;
 
     if options.print {
         println!("{}", serde_json::to_string_pretty(&json)?);
