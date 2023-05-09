@@ -31,8 +31,6 @@ pub fn run(root: &Value, value_to_find: &Value) -> bool {
 
 #[cfg(test)]
 mod tests {
-    use core::num;
-
     /* #region Imports */
     // 3rd Party
     use once_cell::sync::Lazy;
