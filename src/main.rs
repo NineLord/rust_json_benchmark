@@ -25,6 +25,7 @@ use rust_json_benchmark::test_json::{reporter::Report, pc_usage_exporter, excel_
 /* #endregion */
 
 /* #region Default values */
+
 static DEFAULT_PATH_TO_SAVE_FILE: Lazy<String> = Lazy::new(|| {
     let mut path = match home_dir() {
         Some(path_buffer) => path_buffer,

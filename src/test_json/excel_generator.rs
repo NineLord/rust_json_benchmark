@@ -99,13 +99,15 @@ impl<'a> ExcelGenerator<'a> {
 
         /* #region Column 1 */
         /* #region Table 1 */
+
         worksheet.write_string(0, 0, "Title", format_borader_center)?;
         worksheet.write_string(1, 0, "Generating JSON", format_borader)?;
         worksheet.write_string(2, 0, "Iterating JSON Iteratively - BFS", format_borader)?;
         worksheet.write_string(3, 0, "Iterating JSON Recursively - DFS", format_borader)?;
         worksheet.write_string(4, 0, "Deserializing JSON", format_borader)?;
-        worksheet.write_string(5, 0, "Srializing JSON", format_borader)?;
+        worksheet.write_string(5, 0, "Serializing JSON", format_borader)?;
         worksheet.write_string(6, 0, "Total", format_borader)?;
+        
         /* #endregion */
 
         /* #region Table 2 */
