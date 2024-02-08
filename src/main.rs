@@ -69,7 +69,7 @@ struct OptionalArguments {
 
     /// The number of times will run the tests
     #[structopt(default_value = "5")]
-    test_counter: u8,
+    test_counter: u32,
 
     /// Absolute path to save the excel report file to
     #[structopt(short = "s", long = "save-file", parse(from_os_str), default_value = &DEFAULT_PATH_TO_SAVE_FILE)]
